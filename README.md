@@ -102,7 +102,7 @@ Contributions to CLinNET are welcome! If you have any ideas or improvements, fee
 If you use CLinNET in your research, please cite the associated paper:
 
 ```
-[Your citation format for the scientific paper]
+[CLinNET: An Interpretable and Uncertainty-Aware Deep Neural Network for Multi-Modal Clinical Genomics]
 ```
 
 ---
@@ -116,6 +116,6 @@ Special thanks to the contributors and collaborators who made this project possi
 For questions or issues, please contact:
 - Repository owner: [pip-Ivan](https://github.com/pip-Ivan)
 
----
 
-This updated version improves readability, ensures consistency, and makes it more professional. It includes a proper structure with sections like installation, usage, project structure, and acknowledgements for easier navigation.
+
+
