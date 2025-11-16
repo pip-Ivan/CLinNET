@@ -1,0 +1,103 @@
+# Cross-Validation Configuration
+# Define defaults that apply to all folds, then override per fold as needed
+
+defaults:
+  data_params:
+    data_type: ['mut_important', 'cnv_del', 'cnv_amp']
+    cnv_levels: 3
+    mut_binary: true
+    balanced_data: false
+    combine_type: 'union'
+    use_coding_genes_only: true
+    n_split: 5
+  
+  model_params:
+    build:
+      n_hids: {GO: 5, Reactome: 5}
+      ex_source: 'fantom'
+      # Further increased regularization based on 200-epoch analysis
+      w_regs: {Diag: 0.005, GO: [0.006, 0.006, 0.006, 0.006, 0.006, 0.006, 0.006, 0.006, 0.006, 0.006], 
+               Reactome: [0.008, 0.008, 0.008, 0.008, 0.008, 0.008, 0.008, 0.008, 0.008, 0.008]}
+      w_regs_outcome: {GS: 0.004, Diag: 0.001, GO: [0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002], 
+                       Reactome: [0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002]}
+      learning_rate: 0.00004
+      drop_rate: [0.4, 0.3, 0.2, 0.15, 0.1, 0.05]
+      verbose: true
+    train:
+      batch_size: 45
+      epochs: 180
+      verbose: 2
+
+  tissue: 'epithelial cell of prostate'
+  saving_dir: 'PNET_test5'
+
+# Fold-specific tuning based on 200-epoch training analysis
+folds:
+  1:  # Peaked @188, high overfitting (0.074) - need stronger regularization
+    model_params:
+      build:
+        w_regs: {Diag: 0.006, GO: [0.008, 0.008, 0.008, 0.008, 0.008, 0.008, 0.008, 0.008, 0.008, 0.008], 
+                 Reactome: [0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010]}
+        w_regs_outcome: {GS: 0.005, Diag: 0.0015, GO: [0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003], 
+                         Reactome: [0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003]}
+        drop_rate: [0.45, 0.35, 0.25, 0.18, 0.12, 0.08]
+        learning_rate: 0.000035
+      train:
+        batch_size: 40
+        epochs: 150
+        
+
+  2:  # Peaked @200, still improving, high overfitting (0.072) - more epochs + more regularization
+    model_params:
+      build:
+        w_regs: {Diag: 0.00,
+                 GO: [0.007, 0.007, 0.007, 0.007, 0.007, 0.007, 0.007, 0.007, 0.007, 0.007],
+                 Reactome: [0.009, 0.009, 0.009, 0.009, 0.009, 0.009, 0.009, 0.009, 0.009, 0.009]}
+        w_regs_outcome: {GS: 0.005, Diag: 0.0012,
+                         GO: [0.0025, 0.0025, 0.0025, 0.0025, 0.0025, 0.0025, 0.0025, 0.0025, 0.0025, 0.0025],
+                         Reactome: [0.0025, 0.0025, 0.0025, 0.0025, 0.0025, 0.0025, 0.0025, 0.0025, 0.0025, 0.0025]}
+        drop_rate: [0.43, 0.33, 0.23, 0.16, 0.11, 0.06]
+        learning_rate: 0.00004
+      train:
+        batch_size: 42
+        epochs: 200
+
+  3:  # BEST: Peaked @162, moderate overfitting (0.044) - maintain current strategy
+    model_params:
+      build:
+        w_regs: {Diag: 0.004, GO: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01], 
+                 Reactome: [.003, .003, .003, .003, .003, .003,.003, .003, .003, .003]}
+        w_regs_outcome: {GS: .03, Diag: 0.001,
+                         GO: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
+                         Reactome: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]}
+        drop_rate: [.4, .3, .1, .0, .0, .05]
+        learning_rate: 0.00004
+      train:
+        batch_size: 40
+        epochs: 150
+  
+  4:  # Worst AUC, peaked @188, high overfitting (0.072) - aggressive regularization
+    model_params:
+      build:
+        w_regs: {Diag: 0.008, GO: [0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010], 
+                 Reactome: [0.012, 0.012, 0.012, 0.012, 0.012, 0.012, 0.012, 0.012, 0.012, 0.012]}
+        w_regs_outcome: {GS: 0.006, Diag: 0.002, GO: [0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004], 
+                         Reactome: [0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004]}
+        drop_rate: [0.4, 0.4, 0.3, 0.22, 0.15, 0.1]
+        learning_rate: 0.00003
+      train:
+        batch_size: 30
+        epochs: 300
+  
+  5:  # 2nd worst, peaked @199, highest overfitting (0.098), still improving - maximum regularization + more training
+    model_params:
+      build:
+        w_regs: {Diag: 0.005, GO: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01], 
+                 Reactome: [0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003]}
+        w_regs_outcome: {GS: 0.03, Diag: 0.001, GO: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00], 
+                         Reactome: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]}
+        drop_rate: [0.4, 0.3, 0.1, 0, 0, 0]
+        learning_rate: 0.001
+      train:
+        batch_size: 80
+        epochs: 300
