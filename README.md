@@ -14,7 +14,7 @@
 
 ## Overview
 
-![CLinNET Visual Abstract](assets/ClinNet_TOC.pdf)
+![CLinNET Visual Abstract](assets/ClinNet_TOC.png)
 
 CLinNET is a biologically-informed deep learning framework that integrates multi-modal clinical and genomic data for cancer classification and interpretation. Unlike traditional black-box models, CLinNET leverages biological pathways and gene ontologies to create an interpretable neural network architecture that mirrors the hierarchical organization of cellular processes.
 
