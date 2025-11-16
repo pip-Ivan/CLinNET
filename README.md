@@ -241,7 +241,7 @@ See individual README files in `data/` subdirectories for format specifications.
 If you use CLinNET in your research, please cite:
 
 ```bibtex
-@article{clinnet2024,
+@article{clinnet2025,
   title={CLinNET: An Interpretable and Uncertainty-Aware Deep Neural Network for Multi-Modal Clinical Genomics},
   author={Bakhshayeshi.I and Hosseini.MM and Argha. A and Zahedi.A and Lovell.N, and Alinejad-Rokny.H},
   journal={Advanced Science},
